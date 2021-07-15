@@ -39,7 +39,7 @@ router.get('/:id', (req, res) => {
 
 //POST /api/users
 router.post('/', (req, res) => {
-    //expects {username: 'Lerantino', email: 'lernantinit@gmail.com', password: 'password'}
+    //expects {username: '', email: '', password: ''}
     User.create({
         username: req.body.username,
         email: req.body.email,
@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
 
 router.post('/login', (req, res) => {
     //query operation
-    // expects {email: 'lernantino@gmail.com', password: 'password1234'}
+    // expects {email: '', password: ''}
     User.findOne({
         where: {
             email: req.body.email
@@ -80,11 +80,11 @@ router.post('/login', (req, res) => {
 
 //PUT /api/users/1
 router.put('/:id', (req, res) => {
-    // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
+    // expects {username: '', email: '', password: ''}
 
     //pass in req.body instead to only update what's passed through
 
-    // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
+    // if req.body has exact key/value pairs to match the model, use `req.body` instead
     User.update(req.body, {
         individualHooks: true,
         where: {
