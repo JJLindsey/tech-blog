@@ -35,7 +35,7 @@ Post.init(
             defaultValue: DataTypes.NOW
         },
         //comments -option
-        comments: {
+        comment: {
             type: DataTypes.STRING,
             allowNull: true,
             validate: {
