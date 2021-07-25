@@ -24,9 +24,9 @@ router.get('/:id', (req, res) => {
             id: req.params.id
         }
     })
-    .then(dbUserData => {
-        if (!dbUserData) {
-            res.status(404).json({ message: 'No user found with this id' });
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({ message: 'No user found with this id' });
                 return
             }
             res.json(dbUserData);
@@ -45,37 +45,42 @@ router.post('/', (req, res) => {
         email: req.body.email,
         password: req.body.password
     })
-    .then(dbUserData => {
+        .then(dbUserData => {
+            req.session.save(() => {
+                req.session.user_id = dbUserData.id;
+                req.session.username = dbUserData.username;
+                req.session.loggedIn = true;
+
+                res.json(dbUserData);
+            });
+        })
+});
+
+router.post('/login', (req, res) => {
+    //query operation
+    // expects {email: '', password: ''}
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: 'No user with that email address!' });
+            return;
+        }
+
+        // Verify user
+        const validPassword = dbUserData.checkPassword(req.body.password);
+
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect password!' });
+            return;
+        }
         req.session.save(() => {
+            // declare session variables
             req.session.user_id = dbUserData.id;
             req.session.username = dbUserData.username;
             req.session.loggedIn = true;
-
-            res.json(dbUserData);
-        });
-    })
-});
-
-    router.post('/login', (req, res) => {
-        //query operation
-        // expects {email: '', password: ''}
-        User.findOne({
-            where: {
-                email: req.body.email
-            }
-        }).then(dbUserData => {
-            if (!dbUserData) {
-                res.status(400).json({ message: 'No user with that email address!' });
-                return;
-            }
-
-            // Verify user
-            const validPassword = dbUserData.checkPassword(req.body.password);
-
-            if (!validPassword) {
-                res.status(400).json({ message: 'Incorrect password!' });
-                return;
-            }
 
             res.json({ user: dbUserData, message: 'You are now logged in.' });
 
@@ -128,4 +133,17 @@ router.post('/', (req, res) => {
             });
     });
 
-    module.exports = router;
+    //CLEAR session
+    router.post('/logout', (req, res) => {
+        if (req.session.loggedIn) {
+            req.session.destroy(() => {
+                res.status(204).end();
+            });
+        }
+        else {
+            res.status(404).end();
+        }
+    });
+    });
+
+module.exports = router;
