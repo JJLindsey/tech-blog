@@ -12,17 +12,17 @@ body, html {
 
 a {
     text-decoration: none;
-    color: #225ca3;
+    color: #445b77;
     font-weight: bold;
     transition: color .1s;
 }
 
 a:hover {
-    color: #3486eb;
+    color: #34b1eb;
 }
 
 button {
-    background-color: #225ca3;
+    background-color: #2775b4;
     border: 0;
     padding: 1%;
     color: white;
@@ -131,15 +131,6 @@ main {
   .edit-link {
     display: block;
     margin: -1.5% 0 2% 0;
-  }
-  
-  .upvote-btn {
-    background-color: #197d0f;
-    transition: background-color .1s;
-  }
-  
-  .upvote-btn:hover {
-    background-color: #1f9c13;
   }
   
   .comment-form {
