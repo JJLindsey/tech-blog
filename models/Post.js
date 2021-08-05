@@ -20,7 +20,8 @@ Post.init(
             allowNull: false,
             validate: {
                 len: [0, 250]
-            }
+            },
+            defaultValue:'test'
         },
         user_id: {
             type: DataTypes.INTEGER,
