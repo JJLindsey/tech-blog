@@ -34,7 +34,7 @@ app.use(session(sess));
 app.use(express.static(path.join(__dirname, 'public'))),
 
     // turn on routes
-    app.use(routes);
+app.use(routes);
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
